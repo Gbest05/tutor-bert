@@ -29,4 +29,4 @@ $base_path = $is_admin_dir ? '../' : '';
   <!-- Custom Core Stylesheet -->
   <link rel="stylesheet" href="<?php echo $base_path; ?>assets/css/style.css">
 </head>
-<body>
+<body class="<?php echo (basename($_SERVER['PHP_SELF']) === 'index.php') ? 'landing-page' : ''; ?>">
