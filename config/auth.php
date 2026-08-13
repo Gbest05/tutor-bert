@@ -28,21 +28,35 @@ function get_logged_user() {
     global $pdo;
     $userId = $_SESSION['user_id'];
 
-    if (isset($pdo)) {
+    if (isset($pdo) && $pdo !== null) {
         try {
-            $stmt = $pdo->prepare("SELECT u.*, s.id as student_id, s.student_id_code, a.id as admin_id FROM users u LEFT JOIN students s ON u.id = s.user_id LEFT JOIN admins a ON u.id = a.user_id WHERE u.id = ?");
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
             $stmt->execute([$userId]);
             $user = $stmt->fetch();
             if ($user) {
+                $studentId = $_SESSION['student_id'] ?? null;
+                $studentCode = $_SESSION['student_code'] ?? null;
+                $adminId = $_SESSION['admin_id'] ?? null;
+
+                try {
+                    $sStmt = $pdo->prepare("SELECT id, student_id_code FROM students WHERE user_id = ?");
+                    $sStmt->execute([$userId]);
+                    $st = $sStmt->fetch();
+                    if ($st) {
+                        $studentId = $st['id'];
+                        $studentCode = $st['student_id_code'];
+                    }
+                } catch (Exception $ex) {}
+
                 return [
                     'id' => $user['id'],
                     'name' => $user['name'],
                     'email' => $user['email'],
                     'role' => $user['role'],
                     'avatar' => $user['avatar'] ?? null,
-                    'student_id' => $user['student_id'] ?? null,
-                    'student_code' => $user['student_id_code'] ?? null,
-                    'admin_id' => $user['admin_id'] ?? null
+                    'student_id' => $studentId,
+                    'student_code' => $studentCode,
+                    'admin_id' => $adminId
                 ];
             }
         } catch (Exception $e) {

@@ -30,7 +30,7 @@ try {
 } catch (\PDOException $e) {
     $db_connection_error = $e->getMessage();
 
-    // 2. Automatic SQLite Fallback for Render / Cloud hosting without external MySQL
+    // 2. Automatic SQLite Fallback for Cloud Hosting / Render without external MySQL
     try {
         $sqliteDir = __DIR__ . '/../data';
         if (!file_exists($sqliteDir)) {
@@ -41,7 +41,7 @@ try {
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-        // Auto-initialize tables for SQLite fallback
+        // Auto-initialize complete database schema for SQLite fallback
         $pdo->exec("CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
@@ -49,6 +49,22 @@ try {
             password TEXT NOT NULL,
             role TEXT DEFAULT 'student',
             avatar TEXT DEFAULT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );");
+
+        $pdo->exec("CREATE TABLE IF NOT EXISTS students (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            student_id_code TEXT NOT NULL UNIQUE,
+            phone TEXT,
+            department TEXT DEFAULT 'Computer Science',
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );");
+
+        $pdo->exec("CREATE TABLE IF NOT EXISTS admins (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            department TEXT DEFAULT 'Computer Science',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );");
 
@@ -102,7 +118,48 @@ try {
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );");
 
-        $db_connection_error = null; // SQLite connected successfully!
+        $pdo->exec("CREATE TABLE IF NOT EXISTS quizzes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            course_id INTEGER DEFAULT 1,
+            title TEXT NOT NULL,
+            description TEXT,
+            time_limit_mins INTEGER DEFAULT 15,
+            total_questions INTEGER DEFAULT 5,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );");
+
+        $pdo->exec("CREATE TABLE IF NOT EXISTS quiz_questions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            quiz_id INTEGER NOT NULL,
+            question_text TEXT NOT NULL,
+            option_a TEXT NOT NULL,
+            option_b TEXT NOT NULL,
+            option_c TEXT NOT NULL,
+            option_d TEXT NOT NULL,
+            correct_option TEXT NOT NULL,
+            explanation TEXT
+        );");
+
+        $pdo->exec("CREATE TABLE IF NOT EXISTS quiz_results (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            student_id INTEGER NOT NULL,
+            quiz_id INTEGER NOT NULL,
+            score INTEGER NOT NULL,
+            total_questions INTEGER NOT NULL,
+            percentage REAL NOT NULL,
+            completed_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );");
+
+        $pdo->exec("CREATE TABLE IF NOT EXISTS progress (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            student_id INTEGER NOT NULL,
+            course_id INTEGER NOT NULL,
+            completed_lessons INTEGER DEFAULT 0,
+            total_lessons INTEGER DEFAULT 12,
+            last_accessed DATETIME DEFAULT CURRENT_TIMESTAMP
+        );");
+
+        $db_connection_error = null;
     } catch (\PDOException $sqliteEx) {
         $pdo = null;
     }
