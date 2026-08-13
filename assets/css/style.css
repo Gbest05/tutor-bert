@@ -179,15 +179,31 @@ body.auth-page {
   box-shadow: 0 3px 10px rgba(37, 99, 235, 0.3) !important;
 }
 
+.portal-selected-page {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .portal-selected-page {
+    position: static;
+    transform: none;
+  }
+}
+
 .portal-page-badge {
   color: #ffffff;
   background: linear-gradient(135deg, rgba(37, 99, 235, 0.45) 0%, rgba(20, 184, 166, 0.45) 100%);
-  border: 1px solid rgba(20, 184, 166, 0.5);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   font-weight: 600;
   font-size: 0.88rem;
-  padding: 0.4rem 1rem;
-  border-radius: var(--radius-sm);
+  padding: 0.42rem 1.1rem;
+  border-radius: var(--radius-pill);
   display: inline-flex;
   align-items: center;
   gap: 8px;
