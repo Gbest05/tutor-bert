@@ -2,8 +2,12 @@
 // Config: Authentication & Session Helpers
 // ITS-BERT Intelligent Tutoring System
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+if (function_exists('ob_start') && !headers_sent()) {
+    @ob_start();
+}
+
+if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
+    @session_start();
 }
 
 /**
@@ -58,18 +62,25 @@ function get_logged_user() {
     ];
 }
 
+function safe_redirect($url) {
+    if (!headers_sent()) {
+        header("Location: " . $url);
+    } else {
+        echo "<script>window.location.href='" . $url . "';</script><noscript><meta http-equiv='refresh' content='0;url=" . $url . "'></noscript>";
+    }
+    exit();
+}
+
 /**
  * Require Student Authentication
  */
 function require_student() {
     if (!is_logged_in()) {
-        header("Location: login.php?msg=please_login");
-        exit();
+        safe_redirect("login.php?msg=please_login");
     }
     $role = $_SESSION['user_role'] ?? $_SESSION['role'] ?? 'student';
     if ($role !== 'student') {
-        header("Location: admin/index.php");
-        exit();
+        safe_redirect("admin/index.php");
     }
 }
 
@@ -78,13 +89,11 @@ function require_student() {
  */
 function require_admin() {
     if (!is_logged_in()) {
-        header("Location: ../login.php?msg=admin_login_required");
-        exit();
+        safe_redirect("../login.php?msg=admin_login_required");
     }
     $role = $_SESSION['user_role'] ?? $_SESSION['role'] ?? 'student';
     if ($role !== 'admin') {
-        header("Location: ../dashboard.php");
-        exit();
+        safe_redirect("../dashboard.php");
     }
 }
 

@@ -1,6 +1,6 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
+    @session_start();
 }
 
 require_once __DIR__ . '/../config/auth.php';
@@ -140,9 +140,9 @@ if ($is_admin_dir) {
       <?php if ($currentPage === 'index.php'): ?>
         <div class="d-none d-lg-flex align-items-center gap-1">
           <a href="<?php echo $base_path; ?>index.php" class="portal-nav-link active"><i class="bi bi-house-door-fill"></i> Home</a>
-          <a href="#features" class="portal-nav-link"><i class="bi bi-star-fill"></i> Features</a>
-          <a href="#courses" class="portal-nav-link"><i class="bi bi-journal-bookmark-fill"></i> Courses</a>
-          <a href="#about" class="portal-nav-link"><i class="bi bi-info-circle-fill"></i> About</a>
+          <a href="<?php echo $user ? '#features' : $base_path . 'login.php'; ?>" class="portal-nav-link"><i class="bi bi-star-fill"></i> Features</a>
+          <a href="<?php echo $user ? $base_path . 'courses.php' : $base_path . 'login.php'; ?>" class="portal-nav-link"><i class="bi bi-journal-bookmark-fill"></i> Courses</a>
+          <a href="<?php echo $user ? '#about' : $base_path . 'login.php'; ?>" class="portal-nav-link"><i class="bi bi-info-circle-fill"></i> About</a>
           <?php if ($user): ?>
             <a href="<?php echo ($user['role'] === 'admin') ? $base_path . 'admin/index.php' : $base_path . 'dashboard.php'; ?>" class="portal-nav-link"><i class="bi bi-speedometer2"></i> Portal Dashboard</a>
           <?php else: ?>
@@ -211,9 +211,9 @@ if ($is_admin_dir) {
         <a class="portal-nav-link <?php echo ($currentPage == 'index.php') ? 'active' : ''; ?>" href="<?php echo $base_path; ?>index.php">
           <i class="bi bi-house-door-fill"></i> Home
         </a>
-        <a class="portal-nav-link" href="<?php echo $base_path; ?>index.php#features"><i class="bi bi-star-fill"></i> Features</a>
-        <a class="portal-nav-link" href="<?php echo $base_path; ?>index.php#courses"><i class="bi bi-journal-bookmark-fill"></i> Courses</a>
-        <a class="portal-nav-link" href="<?php echo $base_path; ?>index.php#about"><i class="bi bi-info-circle-fill"></i> About</a>
+        <a class="portal-nav-link" href="<?php echo $user ? $base_path . 'index.php#features' : $base_path . 'login.php'; ?>"><i class="bi bi-star-fill"></i> Features</a>
+        <a class="portal-nav-link" href="<?php echo $user ? $base_path . 'courses.php' : $base_path . 'login.php'; ?>"><i class="bi bi-journal-bookmark-fill"></i> Courses</a>
+        <a class="portal-nav-link" href="<?php echo $user ? $base_path . 'index.php#about' : $base_path . 'login.php'; ?>"><i class="bi bi-info-circle-fill"></i> About</a>
 
         <?php if ($user): ?>
           <?php if (($user['role'] ?? '') === 'admin'): ?>
