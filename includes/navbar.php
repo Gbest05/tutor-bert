@@ -14,6 +14,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
 // Only root index.php (not admin/index.php) is the public landing page
 $is_public_landing = ($currentPage === 'index.php' && !$is_admin_dir);
+
+// Helper for avatar fallback
+$defaultAvatar = (($user['role'] ?? '') === 'admin') ? 'ai_tutor_avatar.jpg' : 'student_avatar.jpg';
+$rawAvatar = $user['avatar'] ?? null;
+$avatarFile = ($rawAvatar && file_exists(__DIR__ . '/../assets/images/' . $rawAvatar)) ? $rawAvatar : $defaultAvatar;
+$userAvatar = $base_path . 'assets/images/' . $avatarFile;
 ?>
 
 <?php if ($is_public_landing): ?>
@@ -24,7 +30,7 @@ $is_public_landing = ($currentPage === 'index.php' && !$is_admin_dir);
         
         <!-- Brand Logo -->
         <a class="portal-brand text-decoration-none" href="<?php echo $base_path; ?>index.php">
-          <?php if (!empty($site_settings['logo_image'])): ?>
+          <?php if (!empty($site_settings['logo_image']) && file_exists(__DIR__ . '/../assets/images/' . $site_settings['logo_image'])): ?>
             <img src="<?php echo $base_path; ?>assets/images/<?php echo htmlspecialchars($site_settings['logo_image']); ?>" height="34" class="rounded me-2" alt="Logo">
           <?php else: ?>
             <div class="portal-brand-icon">
@@ -53,9 +59,6 @@ $is_public_landing = ($currentPage === 'index.php' && !$is_admin_dir);
         <!-- Action Tools / User Dropdown -->
         <div class="d-flex align-items-center gap-2">
           <?php if ($user): ?>
-            <?php 
-              $userAvatar = !empty($user['avatar']) ? $base_path . 'assets/images/' . htmlspecialchars($user['avatar']) : ($base_path . 'assets/images/' . (($user['role'] ?? '') === 'admin' ? 'ai_tutor_avatar.jpg' : 'student_avatar.jpg'));
-            ?>
             <div class="dropdown">
               <button class="portal-user-pill border-0 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="<?php echo $userAvatar; ?>" class="portal-user-avatar" alt="Avatar">
@@ -111,7 +114,7 @@ $is_public_landing = ($currentPage === 'index.php' && !$is_admin_dir);
         
         <!-- Left: Brand Logo -->
         <a class="portal-brand text-decoration-none" href="<?php echo $base_path; ?>index.php">
-          <?php if (!empty($site_settings['logo_image'])): ?>
+          <?php if (!empty($site_settings['logo_image']) && file_exists(__DIR__ . '/../assets/images/' . $site_settings['logo_image'])): ?>
             <img src="<?php echo $base_path; ?>assets/images/<?php echo htmlspecialchars($site_settings['logo_image']); ?>" height="34" class="rounded me-2" alt="Logo">
           <?php else: ?>
             <div class="portal-brand-icon">
@@ -127,9 +130,6 @@ $is_public_landing = ($currentPage === 'index.php' && !$is_admin_dir);
         <!-- Right: Admin / User Profile Pic & Name Only -->
         <div class="d-flex align-items-center gap-2">
           <?php if ($user): ?>
-            <?php 
-              $userAvatar = !empty($user['avatar']) ? $base_path . 'assets/images/' . htmlspecialchars($user['avatar']) : ($base_path . 'assets/images/' . (($user['role'] ?? '') === 'admin' ? 'ai_tutor_avatar.jpg' : 'student_avatar.jpg'));
-            ?>
             <div class="dropdown">
               <button class="portal-user-pill border-0 dropdown-toggle py-1 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="<?php echo $userAvatar; ?>" class="portal-user-avatar me-1" alt="Avatar">
