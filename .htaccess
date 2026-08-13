@@ -1,0 +1,17 @@
+# Apache Configuration for ITS-BERT Intelligent Tutoring System
+# Bypasses mod_security & free hosting 403 blocks on API endpoints
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+</IfModule>
+
+# Disable Directory Browsing
+Options -Indexes
+
+# Ensure standard PHP execution & header handling
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>

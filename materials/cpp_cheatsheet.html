@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>C++ Class & Inheritance Cheatsheet | ITS-BERT</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #0f172a; color: #f8fafc; padding: 2rem; }
+    .card { background: #1e293b; border: 1px solid rgba(255,255,255,0.1); color: #ffffff; }
+    pre { background: #090d16; color: #38bdf8; padding: 1rem; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div class="container max-w-700">
+    <h2 class="fw-bold text-info mb-3">C++ Class & Inheritance Cheatsheet</h2>
+    <p class="text-secondary">ITS-BERT Intelligent Tutoring System - Quick Reference Guide</p>
+    
+    <div class="card p-4 my-3">
+      <h4 class="text-accent">1. Class Declaration & Access Specifiers</h4>
+      <pre><code>class Student {
+private:
+    int id;
+    string name;
+public:
+    Student(int i, string n) : id(i), name(n) {}
+    void display() { cout << name << endl; }
+};</code></pre>
+    </div>
+
+    <div class="card p-4 my-3">
+      <h4 class="text-accent">2. Virtual Functions & Inheritance</h4>
+      <pre><code>class Shape {
+public:
+    virtual void draw() = 0; // Pure virtual function
+};
+
+class Circle : public Shape {
+public:
+    void draw() override { cout << "Drawing Circle" << endl; }
+};</code></pre>
+    </div>
+  </div>
+</body>
+</html>

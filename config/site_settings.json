@@ -1,0 +1,13 @@
+{
+  "site_name": "ITS-BERT",
+  "site_subtitle": "INTELLIGENT TUTOR",
+  "site_tagline": "Learn Smarter with AI-Powered Tutoring",
+  "hero_badge": "BERT NLP Transformer System",
+  "hero_title": "Learn Smarter with AI-Powered Tutoring",
+  "hero_subtitle": "An intelligent tutoring system powered by advanced Natural Language Processing to provide personalized learning assistance, instant answers, interactive quizzes, and progress tracking.",
+  "logo_icon": "bi-cpu-fill",
+  "logo_image": "",
+  "hero_bg_image": "hero_learning_bg.jpg",
+  "footer_text": "ITS-BERT is an AI-driven Intelligent Tutoring System designed for Computer Science education.",
+  "contact_email": "support@itsbert.edu.ng"
+}
