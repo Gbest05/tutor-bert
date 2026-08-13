@@ -11,100 +11,6 @@ $user = get_logged_user();
 $is_admin_dir = (strpos($_SERVER['SCRIPT_NAME'], '/admin/') !== false);
 $base_path = $is_admin_dir ? '../' : '';
 $currentPage = basename($_SERVER['PHP_SELF']);
-
-// Determine selected page name and icon to show in portal header
-$page_display_name = 'Dashboard';
-$page_display_icon = 'bi-grid-fill';
-
-if ($is_admin_dir) {
-    switch ($currentPage) {
-        case 'index.php':
-            $page_display_name = 'Admin Dashboard';
-            $page_display_icon = 'bi-speedometer2';
-            break;
-        case 'students.php':
-            $page_display_name = 'Student Management';
-            $page_display_icon = 'bi-people-fill';
-            break;
-        case 'questions.php':
-            $page_display_name = 'Question Audit Logs';
-            $page_display_icon = 'bi-chat-left-dots-fill';
-            break;
-        case 'courses.php':
-            $page_display_name = 'Course Management';
-            $page_display_icon = 'bi-journal-album';
-            break;
-        case 'quizzes.php':
-            $page_display_name = 'Quiz & Exam Manager';
-            $page_display_icon = 'bi-file-earmark-check-fill';
-            break;
-        case 'materials.php':
-            $page_display_name = 'Resource Repository';
-            $page_display_icon = 'bi-folder-fill';
-            break;
-        case 'settings.php':
-            $page_display_name = 'Site Configuration';
-            $page_display_icon = 'bi-gear-fill';
-            break;
-        case 'profile.php':
-            $page_display_name = 'Admin Security';
-            $page_display_icon = 'bi-person-gear';
-            break;
-        default:
-            $page_display_name = isset($page_title) ? $page_title : 'Admin Control Panel';
-            $page_display_icon = 'bi-speedometer2';
-            break;
-    }
-} else {
-    switch ($currentPage) {
-        case 'index.php':
-            $page_display_name = 'Home';
-            $page_display_icon = 'bi-house-door-fill';
-            break;
-        case 'dashboard.php':
-            $page_display_name = 'Student Dashboard';
-            $page_display_icon = 'bi-grid-fill';
-            break;
-        case 'ai_tutor.php':
-            $page_display_name = 'AI Tutor (BERT)';
-            $page_display_icon = 'bi-robot';
-            break;
-        case 'courses.php':
-        case 'course_view.php':
-            $page_display_name = 'Course Catalog';
-            $page_display_icon = 'bi-journal-bookmark-fill';
-            break;
-        case 'quizzes.php':
-        case 'take_quiz.php':
-            $page_display_name = 'Quizzes & Assessments';
-            $page_display_icon = 'bi-file-earmark-check-fill';
-            break;
-        case 'materials.php':
-            $page_display_name = 'Learning Resources';
-            $page_display_icon = 'bi-folder-symlink-fill';
-            break;
-        case 'progress.php':
-            $page_display_name = 'My Progress Analytics';
-            $page_display_icon = 'bi-graph-up-arrow';
-            break;
-        case 'profile.php':
-            $page_display_name = 'Profile & Security';
-            $page_display_icon = 'bi-person-gear';
-            break;
-        case 'login.php':
-            $page_display_name = 'Portal Login';
-            $page_display_icon = 'bi-box-arrow-in-right';
-            break;
-        case 'register.php':
-            $page_display_name = 'Account Registration';
-            $page_display_icon = 'bi-person-plus-fill';
-            break;
-        default:
-            $page_display_name = isset($page_title) ? $page_title : 'Student Portal';
-            $page_display_icon = 'bi-app-indicator';
-            break;
-    }
-}
 ?>
 <header class="portal-header">
   <div class="container-fluid px-3">
@@ -141,7 +47,7 @@ if ($is_admin_dir) {
         </a>
       <?php endif; ?>
 
-      <!-- Center: Landing Page Nav Links (Index Only) vs Redesigned Portal Page Title Badge (Portals) -->
+      <!-- Center: Landing Page Nav Links (Index Only - No page name badges in portals) -->
       <?php if ($currentPage === 'index.php'): ?>
         <div class="d-none d-lg-flex align-items-center gap-1">
           <a href="<?php echo $base_path; ?>index.php" class="portal-nav-link active"><i class="bi bi-house-door-fill"></i> Home</a>
@@ -154,13 +60,6 @@ if ($is_admin_dir) {
             <a href="<?php echo $base_path; ?>ai_tutor.php" class="portal-nav-link"><i class="bi bi-robot"></i> Ask BERT</a>
           <?php endif; ?>
         </div>
-      <?php else: ?>
-        <!-- Portal Header Center: Prominent Selected Page Badge -->
-        <div class="portal-selected-page d-flex align-items-center justify-content-center">
-          <span class="portal-page-badge shadow-sm">
-            <i class="bi <?php echo $page_display_icon; ?>"></i> <?php echo htmlspecialchars($page_display_name); ?>
-          </span>
-        </div>
       <?php endif; ?>
 
       <!-- Right: User Profile Pill & Action Tools -->
@@ -172,7 +71,7 @@ if ($is_admin_dir) {
           <div class="dropdown">
             <button class="portal-user-pill border-0 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <img src="<?php echo $userAvatar; ?>" class="portal-user-avatar" alt="Avatar">
-              <span class="d-none d-sm-inline"><?php echo htmlspecialchars($user['name']); ?></span>
+              <span class="d-none d-sm-inline text-truncate" style="max-width: 130px;"><?php echo htmlspecialchars($user['name']); ?></span>
               <span class="badge bg-accent-subtle text-accent ms-1 border border-accent-subtle" style="font-size: 0.65rem;"><?php echo strtoupper($user['role'] ?? 'STUDENT'); ?></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 mt-2">
