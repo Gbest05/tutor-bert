@@ -20,6 +20,13 @@ $defaultAvatar = (($user['role'] ?? '') === 'admin') ? 'ai_tutor_avatar.jpg' : '
 $rawAvatar = $user['avatar'] ?? null;
 $avatarFile = ($rawAvatar && file_exists(__DIR__ . '/../assets/images/' . $rawAvatar)) ? $rawAvatar : $defaultAvatar;
 $userAvatar = $base_path . 'assets/images/' . $avatarFile;
+
+// Extract Surname (last name) for header display
+$userSurname = 'User';
+if ($user && !empty($user['name'])) {
+    $nameParts = preg_split('/\s+/', trim($user['name']));
+    $userSurname = end($nameParts);
+}
 ?>
 
 <?php if ($is_public_landing): ?>
@@ -60,9 +67,9 @@ $userAvatar = $base_path . 'assets/images/' . $avatarFile;
         <div class="d-flex align-items-center gap-2">
           <?php if ($user): ?>
             <div class="dropdown">
-              <button class="portal-user-pill border-0 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="<?php echo $userAvatar; ?>" class="portal-user-avatar" alt="Avatar">
-                <span class="d-none d-sm-inline text-truncate" style="max-width: 130px;"><?php echo htmlspecialchars($user['name']); ?></span>
+              <button class="portal-user-pill border-0 dropdown-toggle py-1 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="<?php echo $userAvatar; ?>" class="portal-user-avatar me-1" alt="Avatar">
+                <span class="d-none d-sm-inline text-truncate" style="max-width: 130px;"><?php echo htmlspecialchars($userSurname); ?></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 mt-2">
                 <li><a class="dropdown-item py-2" href="<?php echo ($user['role'] === 'admin') ? $base_path . 'admin/index.php' : $base_path . 'dashboard.php'; ?>"><i class="bi bi-speedometer2 me-2 text-primary"></i> Dashboard</a></li>
@@ -107,7 +114,7 @@ $userAvatar = $base_path . 'assets/images/' . $avatarFile;
     </div>
   </header>
 <?php else: ?>
-  <!-- Portal Header Bar (Admin & Student Portals - Profile Pic & Name Only) -->
+  <!-- Portal Header Bar (Admin & Student Portals - Profile Pic & Surname Only) -->
   <header class="portal-header">
     <div class="container-fluid px-3">
       <div class="d-flex align-items-center justify-content-between h-100">
@@ -115,7 +122,7 @@ $userAvatar = $base_path . 'assets/images/' . $avatarFile;
         <!-- Left: Brand Logo -->
         <a class="portal-brand text-decoration-none" href="<?php echo $base_path; ?>index.php">
           <?php if (!empty($site_settings['logo_image']) && file_exists(__DIR__ . '/../assets/images/' . $site_settings['logo_image'])): ?>
-            <img src="<?php echo $base_path; ?>assets/images/<?php echo htmlspecialchars($site_settings['logo_image']); ?>" height="34" class="rounded me-2" alt="Logo">
+            <img src="<?php echo $base_path; ?>assets/images/<?php echo htmlspecialchars($site_settings['logo_image']); ?>" height="36" class="rounded me-2" alt="Logo">
           <?php else: ?>
             <div class="portal-brand-icon">
               <i class="bi <?php echo htmlspecialchars($site_settings['logo_icon'] ?? 'bi-cpu-fill'); ?>"></i>
@@ -127,13 +134,13 @@ $userAvatar = $base_path . 'assets/images/' . $avatarFile;
           </div>
         </a>
 
-        <!-- Right: Admin / User Profile Pic & Name Only -->
+        <!-- Right: Profile Icon & Surname Only -->
         <div class="d-flex align-items-center gap-2">
           <?php if ($user): ?>
             <div class="dropdown">
-              <button class="portal-user-pill border-0 dropdown-toggle py-1 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="<?php echo $userAvatar; ?>" class="portal-user-avatar me-1" alt="Avatar">
-                <span class="d-inline-block text-white fw-semibold text-truncate align-middle" style="max-width: 160px; font-size: 0.88rem;"><?php echo htmlspecialchars($user['name']); ?></span>
+              <button class="portal-user-pill border-0 dropdown-toggle py-1.5 px-2.5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="<?php echo $userAvatar; ?>" class="portal-user-avatar me-1.5" alt="Avatar">
+                <span class="d-inline-block text-white fw-semibold text-truncate align-middle" style="max-width: 140px; font-size: 0.9rem;"><?php echo htmlspecialchars($userSurname); ?></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 mt-2">
                 <li><a class="dropdown-item py-2" href="<?php echo ($user['role'] === 'admin') ? $base_path . 'admin/index.php' : $base_path . 'dashboard.php'; ?>"><i class="bi bi-speedometer2 me-2 text-primary"></i> Dashboard</a></li>
