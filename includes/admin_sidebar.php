@@ -23,12 +23,11 @@ $site_settings = get_site_settings();
         </div>
       </div>
 
-      <!-- Admin Profile Badge -->
-      <div class="d-flex align-items-center gap-2 px-1">
-        <img src="<?php echo $adminAvatar; ?>" alt="Admin Avatar" class="rounded-circle flex-shrink-0" width="40" height="40" style="object-fit: cover; border: 2px solid var(--accent-color);">
+      <!-- Clean User Profile Badge -->
+      <div class="d-flex align-items-center gap-2 px-1 py-1">
+        <img src="<?php echo $adminAvatar; ?>" alt="User Avatar" class="rounded-circle flex-shrink-0" width="40" height="40" style="object-fit: cover; border: 2px solid var(--accent-color);">
         <div style="min-width: 0;">
-          <h6 class="text-white mb-1 font-heading text-truncate" style="font-size: 0.88rem; line-height: 1.2;"><?php echo htmlspecialchars($adminUser['name'] ?? 'System Admin'); ?></h6>
-          <span class="badge bg-danger-subtle text-danger border border-danger-subtle d-inline-block" style="font-size: 0.62rem; padding: 2px 6px;">ADMIN PORTAL</span>
+          <h6 class="text-white mb-0 font-heading text-truncate" style="font-size: 0.9rem;"><?php echo htmlspecialchars($adminUser['name'] ?? 'User'); ?></h6>
         </div>
       </div>
     </div>
@@ -81,7 +80,7 @@ $site_settings = get_site_settings();
   <!-- Logout Footer -->
   <div class="dash-sidebar-bottom">
     <a href="../logout.php" class="btn btn-outline-danger btn-sm w-100 font-heading fw-semibold">
-      <i class="bi bi-box-arrow-right me-1"></i> Exit Admin
+      <i class="bi bi-box-arrow-right me-1"></i> Exit Portal
     </a>
   </div>
 </aside>

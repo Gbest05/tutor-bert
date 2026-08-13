@@ -23,12 +23,11 @@ $site_settings = get_site_settings();
         </div>
       </div>
 
-      <!-- Student Profile Badge -->
-      <div class="d-flex align-items-center gap-2 px-1">
-        <img src="<?php echo $studentAvatar; ?>" alt="Student Avatar" class="rounded-circle flex-shrink-0" width="40" height="40" style="object-fit: cover; border: 2px solid var(--accent-color);">
+      <!-- Clean User Profile Badge -->
+      <div class="d-flex align-items-center gap-2 px-1 py-1">
+        <img src="<?php echo $studentAvatar; ?>" alt="User Avatar" class="rounded-circle flex-shrink-0" width="40" height="40" style="object-fit: cover; border: 2px solid var(--accent-color);">
         <div style="min-width: 0;">
-          <h6 class="text-white mb-0 font-heading text-truncate" style="font-size: 0.9rem;"><?php echo htmlspecialchars($studentUser['name'] ?? 'Student'); ?></h6>
-          <small class="text-info" style="font-size: 0.75rem;">ND II Computer Science</small>
+          <h6 class="text-white mb-0 font-heading text-truncate" style="font-size: 0.92rem;"><?php echo htmlspecialchars($studentUser['name'] ?? 'User'); ?></h6>
         </div>
       </div>
     </div>

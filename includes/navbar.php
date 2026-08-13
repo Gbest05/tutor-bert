@@ -11,10 +11,13 @@ $user = get_logged_user();
 $is_admin_dir = (strpos($_SERVER['SCRIPT_NAME'], '/admin/') !== false);
 $base_path = $is_admin_dir ? '../' : '';
 $currentPage = basename($_SERVER['PHP_SELF']);
+
+// Only root index.php (not admin/index.php) is the public landing page
+$is_public_landing = ($currentPage === 'index.php' && !$is_admin_dir);
 ?>
 
-<?php if ($currentPage === 'index.php'): ?>
-  <!-- Landing Page Only Top Navigation Header Bar -->
+<?php if ($is_public_landing): ?>
+  <!-- Public Landing Page Top Header Bar (Root index.php Only) -->
   <header class="portal-header">
     <div class="container-fluid px-3">
       <div class="d-flex align-items-center justify-content-between h-100">
@@ -41,13 +44,13 @@ $currentPage = basename($_SERVER['PHP_SELF']);
           <a href="<?php echo $user ? $base_path . 'courses.php' : $base_path . 'login.php'; ?>" class="portal-nav-link"><i class="bi bi-journal-bookmark-fill"></i> Courses</a>
           <a href="<?php echo $user ? '#about' : $base_path . 'login.php'; ?>" class="portal-nav-link"><i class="bi bi-info-circle-fill"></i> About</a>
           <?php if ($user): ?>
-            <a href="<?php echo ($user['role'] === 'admin') ? $base_path . 'admin/index.php' : $base_path . 'dashboard.php'; ?>" class="portal-nav-link"><i class="bi bi-speedometer2"></i> Portal Dashboard</a>
+            <a href="<?php echo ($user['role'] === 'admin') ? $base_path . 'admin/index.php' : $base_path . 'dashboard.php'; ?>" class="portal-nav-link"><i class="bi bi-speedometer2"></i> Dashboard</a>
           <?php else: ?>
             <a href="<?php echo $base_path; ?>ai_tutor.php" class="portal-nav-link"><i class="bi bi-robot"></i> Ask BERT</a>
           <?php endif; ?>
         </div>
 
-        <!-- Action Tools / Login Register -->
+        <!-- Action Tools / User Dropdown -->
         <div class="d-flex align-items-center gap-2">
           <?php if ($user): ?>
             <?php 
@@ -57,7 +60,6 @@ $currentPage = basename($_SERVER['PHP_SELF']);
               <button class="portal-user-pill border-0 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="<?php echo $userAvatar; ?>" class="portal-user-avatar" alt="Avatar">
                 <span class="d-none d-sm-inline text-truncate" style="max-width: 130px;"><?php echo htmlspecialchars($user['name']); ?></span>
-                <span class="badge bg-accent-subtle text-accent ms-1 border border-accent-subtle" style="font-size: 0.65rem;"><?php echo strtoupper($user['role'] ?? 'STUDENT'); ?></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 mt-2">
                 <li><a class="dropdown-item py-2" href="<?php echo ($user['role'] === 'admin') ? $base_path . 'admin/index.php' : $base_path . 'dashboard.php'; ?>"><i class="bi bi-speedometer2 me-2 text-primary"></i> Dashboard</a></li>
@@ -89,7 +91,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
           <a class="portal-nav-link active" href="<?php echo $base_path; ?>index.php"><i class="bi bi-house-door-fill"></i> Home</a>
           <a class="portal-nav-link" href="<?php echo $user ? $base_path . 'index.php#features' : $base_path . 'login.php'; ?>"><i class="bi bi-star-fill"></i> Features</a>
           <a class="portal-nav-link" href="<?php echo $user ? $base_path . 'courses.php' : $base_path . 'login.php'; ?>"><i class="bi bi-journal-bookmark-fill"></i> Courses</a>
-          <a class="portal-nav-link" href="<?php echo $user ? $base_path . 'index.php#about' : $base_path . 'login.php'; ?>"><i class="bi bi-info-circle-fill"></i> About</a>
+          <a class="portal-nav-link" href="<?php echo $user ? '#about' : $base_path . 'login.php'; ?>"><i class="bi bi-info-circle-fill"></i> About</a>
           <?php if (!$user): ?>
             <div class="pt-2 mt-2 border-top border-secondary border-opacity-50 d-flex flex-column gap-2">
               <a href="<?php echo $base_path; ?>login.php" class="btn btn-outline-light btn-sm w-100 rounded-pill fw-semibold py-2"><i class="bi bi-box-arrow-in-right me-1"></i> Login</a>
@@ -102,7 +104,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     </div>
   </header>
 <?php else: ?>
-  <!-- Mobile-Only Portal Top Header (Visible strictly on mobile screens < 992px, Hidden on Desktop) -->
+  <!-- Mobile-Only Compact Top Bar (Visible strictly on mobile screens < 992px, Hidden on Desktop) -->
   <div class="portal-mobile-topbar d-lg-none">
     <div class="d-flex align-items-center justify-content-between px-3 h-100">
       <div class="portal-brand">
@@ -117,9 +119,6 @@ $currentPage = basename($_SERVER['PHP_SELF']);
       </div>
 
       <div class="d-flex align-items-center gap-2">
-        <?php if ($user): ?>
-          <span class="badge bg-accent-subtle text-accent border border-accent-subtle" style="font-size: 0.65rem;"><?php echo strtoupper($user['role'] ?? 'STUDENT'); ?></span>
-        <?php endif; ?>
         <button class="btn btn-link text-white p-0 border-0 ms-1" type="button" id="mobilePortalNavToggle" aria-label="Toggle Sidebar">
           <i class="bi bi-list fs-2 text-white"></i>
         </button>
