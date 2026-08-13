@@ -50,8 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (mobileNavBtn) {
     mobileNavBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();
 
-      // 1. Toggle dashboard offcanvas sidebar drawer on mobile if present
+      // 1. Toggle dashboard offcanvas sidebar drawer inside portals
       if (dashSidebar && window.innerWidth <= 991) {
         let backdrop = document.querySelector('.sidebar-backdrop');
         if (!backdrop) {
@@ -66,9 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
           dashSidebar.classList.remove('show');
           backdrop.classList.remove('show');
         };
+        return; // Exclusively toggle sidebar inside portals!
       }
 
-      // 2. Toggle Bootstrap collapse menu if present
+      // 2. Toggle Bootstrap collapse menu on Landing Page (index.php) only
       if (mobilePortalNav && typeof bootstrap !== 'undefined') {
         const bsCollapse = bootstrap.Collapse.getOrCreateInstance(mobilePortalNav);
         bsCollapse.toggle();

@@ -116,38 +116,18 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
     </div>
 
-    <!-- Mobile Nav Collapse (Hamburger Menu) -->
-    <div class="collapse d-lg-none mt-2 pt-2 border-top border-secondary border-opacity-50" id="mobilePortalNav">
-      <div class="d-flex flex-column gap-1">
-        <?php if ($currentPage === 'index.php'): ?>
+    <!-- Mobile Nav Collapse (Hamburger Menu - Landing Page Index Only) -->
+    <?php if ($currentPage === 'index.php'): ?>
+      <div class="collapse d-lg-none mt-2 pt-2 border-top border-secondary border-opacity-50" id="mobilePortalNav">
+        <div class="d-flex flex-column gap-1">
           <a class="portal-nav-link active" href="<?php echo $base_path; ?>index.php">
             <i class="bi bi-house-door-fill"></i> Home
           </a>
           <a class="portal-nav-link" href="<?php echo $user ? $base_path . 'index.php#features' : $base_path . 'login.php'; ?>"><i class="bi bi-star-fill"></i> Features</a>
           <a class="portal-nav-link" href="<?php echo $user ? $base_path . 'courses.php' : $base_path . 'login.php'; ?>"><i class="bi bi-journal-bookmark-fill"></i> Courses</a>
           <a class="portal-nav-link" href="<?php echo $user ? $base_path . 'index.php#about' : $base_path . 'login.php'; ?>"><i class="bi bi-info-circle-fill"></i> About</a>
-        <?php endif; ?>
 
-        <?php if ($user): ?>
-          <?php if (($user['role'] ?? '') === 'admin'): ?>
-            <a class="portal-nav-link <?php echo ($currentPage == 'index.php') ? 'active' : ''; ?>" href="<?php echo $base_path; ?>admin/index.php"><i class="bi bi-speedometer2"></i> Admin Dashboard</a>
-            <a class="portal-nav-link <?php echo ($currentPage == 'students.php') ? 'active' : ''; ?>" href="<?php echo $base_path; ?>admin/students.php"><i class="bi bi-people-fill"></i> Students</a>
-            <a class="portal-nav-link <?php echo ($currentPage == 'courses.php') ? 'active' : ''; ?>" href="<?php echo $base_path; ?>admin/courses.php"><i class="bi bi-journal-album"></i> Courses</a>
-            <a class="portal-nav-link <?php echo ($currentPage == 'quizzes.php') ? 'active' : ''; ?>" href="<?php echo $base_path; ?>admin/quizzes.php"><i class="bi bi-file-earmark-check-fill"></i> Quizzes</a>
-            <a class="portal-nav-link <?php echo ($currentPage == 'materials.php') ? 'active' : ''; ?>" href="<?php echo $base_path; ?>admin/materials.php"><i class="bi bi-folder-fill"></i> Resources</a>
-            <a class="portal-nav-link <?php echo ($currentPage == 'questions.php') ? 'active' : ''; ?>" href="<?php echo $base_path; ?>admin/questions.php"><i class="bi bi-chat-left-dots-fill"></i> Question Logs</a>
-            <a class="portal-nav-link <?php echo ($currentPage == 'settings.php') ? 'active' : ''; ?>" href="<?php echo $base_path; ?>admin/settings.php"><i class="bi bi-gear-fill"></i> Site Settings</a>
-          <?php else: ?>
-            <a class="portal-nav-link <?php echo ($currentPage == 'dashboard.php') ? 'active' : ''; ?>" href="<?php echo $base_path; ?>dashboard.php"><i class="bi bi-grid-fill"></i> Dashboard</a>
-            <a class="portal-nav-link <?php echo ($currentPage == 'ai_tutor.php') ? 'active' : ''; ?>" href="<?php echo $base_path; ?>ai_tutor.php"><i class="bi bi-robot"></i> AI Tutor (BERT)</a>
-            <a class="portal-nav-link <?php echo ($currentPage == 'courses.php') ? 'active' : ''; ?>" href="<?php echo $base_path; ?>courses.php"><i class="bi bi-journal-bookmark-fill"></i> Courses</a>
-            <a class="portal-nav-link <?php echo ($currentPage == 'quizzes.php') ? 'active' : ''; ?>" href="<?php echo $base_path; ?>quizzes.php"><i class="bi bi-file-earmark-check-fill"></i> Quizzes</a>
-            <a class="portal-nav-link <?php echo ($currentPage == 'materials.php') ? 'active' : ''; ?>" href="<?php echo $base_path; ?>materials.php"><i class="bi bi-folder-symlink-fill"></i> Resources</a>
-            <a class="portal-nav-link <?php echo ($currentPage == 'progress.php') ? 'active' : ''; ?>" href="<?php echo $base_path; ?>progress.php"><i class="bi bi-graph-up-arrow"></i> Progress</a>
-            <a class="portal-nav-link <?php echo ($currentPage == 'profile.php') ? 'active' : ''; ?>" href="<?php echo $base_path; ?>profile.php"><i class="bi bi-person-gear"></i> Profile Settings</a>
-          <?php endif; ?>
-        <?php else: ?>
-          <?php if ($currentPage === 'index.php'): ?>
+          <?php if (!$user): ?>
             <!-- Login & Register Buttons in Hamburger for Mobile Landing Page -->
             <div class="pt-2 mt-2 border-top border-secondary border-opacity-50 d-flex flex-column gap-2">
               <a href="<?php echo $base_path; ?>login.php" class="btn btn-outline-light btn-sm w-100 rounded-pill fw-semibold py-2">
@@ -158,9 +138,9 @@ $currentPage = basename($_SERVER['PHP_SELF']);
               </a>
             </div>
           <?php endif; ?>
-        <?php endif; ?>
+        </div>
       </div>
-    </div>
+    <?php endif; ?>
 
   </div>
 </header>
