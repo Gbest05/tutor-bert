@@ -138,13 +138,21 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
 }
 
 // Fetch Courses & Lessons Count
-$courses = $pdo->query("
-  SELECT c.*, COUNT(l.id) as lesson_count 
-  FROM courses c 
-  LEFT JOIN lessons l ON c.id = l.course_id 
-  GROUP BY c.id 
-  ORDER BY c.created_at ASC
-")->fetchAll();
+try {
+    $courses = $pdo->query("
+      SELECT c.*, COUNT(l.id) as lesson_count 
+      FROM courses c 
+      LEFT JOIN lessons l ON c.id = l.course_id 
+      GROUP BY c.id 
+      ORDER BY c.created_at ASC
+    ")->fetchAll();
+} catch (Exception $ex) {
+    try {
+        $courses = $pdo->query("SELECT c.*, 0 as lesson_count FROM courses c ORDER BY c.created_at ASC")->fetchAll();
+    } catch (Exception $e2) {
+        $courses = [];
+    }
+}
 
 require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../includes/navbar.php';

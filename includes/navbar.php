@@ -104,25 +104,53 @@ $is_public_landing = ($currentPage === 'index.php' && !$is_admin_dir);
     </div>
   </header>
 <?php else: ?>
-  <!-- Mobile-Only Compact Top Bar (Visible strictly on mobile screens < 992px, Hidden on Desktop) -->
-  <div class="portal-mobile-topbar d-lg-none">
-    <div class="d-flex align-items-center justify-content-between px-3 h-100">
-      <div class="portal-brand">
-        <?php if (!empty($site_settings['logo_image'])): ?>
-          <img src="<?php echo $base_path; ?>assets/images/<?php echo htmlspecialchars($site_settings['logo_image']); ?>" height="30" class="rounded me-2" alt="Logo">
-        <?php else: ?>
-          <div class="portal-brand-icon" style="width: 30px; height: 30px; font-size: 1rem;">
-            <i class="bi <?php echo htmlspecialchars($site_settings['logo_icon'] ?? 'bi-cpu-fill'); ?>"></i>
+  <!-- Portal Header Bar (Admin & Student Portals - Profile Pic & Name Only) -->
+  <header class="portal-header">
+    <div class="container-fluid px-3">
+      <div class="d-flex align-items-center justify-content-between h-100">
+        
+        <!-- Left: Brand Logo -->
+        <a class="portal-brand text-decoration-none" href="<?php echo $base_path; ?>index.php">
+          <?php if (!empty($site_settings['logo_image'])): ?>
+            <img src="<?php echo $base_path; ?>assets/images/<?php echo htmlspecialchars($site_settings['logo_image']); ?>" height="34" class="rounded me-2" alt="Logo">
+          <?php else: ?>
+            <div class="portal-brand-icon">
+              <i class="bi <?php echo htmlspecialchars($site_settings['logo_icon'] ?? 'bi-cpu-fill'); ?>"></i>
+            </div>
+          <?php endif; ?>
+          <div>
+            <span class="d-block leading-none fw-bold text-truncate" style="max-width: 140px;"><?php echo htmlspecialchars($site_settings['site_name']); ?></span>
+            <span class="badge d-none d-md-inline-block fw-semibold" style="font-size: 0.62rem; letter-spacing: 0.5px; color: #38bdf8; background: rgba(14, 116, 144, 0.25); border: 1px solid rgba(56, 189, 248, 0.4);"><?php echo htmlspecialchars($site_settings['site_subtitle']); ?></span>
           </div>
-        <?php endif; ?>
-        <span class="fw-bold text-white fs-6 ms-1"><?php echo htmlspecialchars($site_settings['site_name']); ?></span>
-      </div>
+        </a>
 
-      <div class="d-flex align-items-center gap-2">
-        <button class="btn btn-link text-white p-0 border-0 ms-1" type="button" id="mobilePortalNavToggle" aria-label="Toggle Sidebar">
-          <i class="bi bi-list fs-2 text-white"></i>
-        </button>
+        <!-- Right: Admin / User Profile Pic & Name Only -->
+        <div class="d-flex align-items-center gap-2">
+          <?php if ($user): ?>
+            <?php 
+              $userAvatar = !empty($user['avatar']) ? $base_path . 'assets/images/' . htmlspecialchars($user['avatar']) : ($base_path . 'assets/images/' . (($user['role'] ?? '') === 'admin' ? 'ai_tutor_avatar.jpg' : 'student_avatar.jpg'));
+            ?>
+            <div class="dropdown">
+              <button class="portal-user-pill border-0 dropdown-toggle py-1 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="<?php echo $userAvatar; ?>" class="portal-user-avatar me-1" alt="Avatar">
+                <span class="d-inline-block text-white fw-semibold text-truncate align-middle" style="max-width: 160px; font-size: 0.88rem;"><?php echo htmlspecialchars($user['name']); ?></span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 mt-2">
+                <li><a class="dropdown-item py-2" href="<?php echo ($user['role'] === 'admin') ? $base_path . 'admin/index.php' : $base_path . 'dashboard.php'; ?>"><i class="bi bi-speedometer2 me-2 text-primary"></i> Dashboard</a></li>
+                <li><a class="dropdown-item py-2" href="<?php echo ($user['role'] === 'admin') ? $base_path . 'admin/profile.php' : $base_path . 'profile.php'; ?>"><i class="bi bi-person-gear me-2 text-secondary"></i> Profile Settings</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item py-2 text-danger font-heading fw-semibold" href="<?php echo $base_path; ?>logout.php"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
+              </ul>
+            </div>
+          <?php endif; ?>
+
+          <!-- Mobile Hamburger Toggle Button (Strictly toggles sidebar drawer) -->
+          <button class="btn btn-link text-white d-lg-none p-1 ms-1 border-0" type="button" id="mobilePortalNavToggle" aria-label="Toggle Sidebar Navigation">
+            <i class="bi bi-list fs-2 text-white"></i>
+          </button>
+        </div>
+
       </div>
     </div>
-  </div>
+  </header>
 <?php endif; ?>
