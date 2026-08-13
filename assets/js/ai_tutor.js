@@ -1,11 +1,36 @@
-/* AI Tutor ChatGPT-Style Script for ITS-BERT */
+  // Mobile Offcanvas Sidebar Handler
+  const tutorSidebarToggle = document.getElementById('tutorSidebarToggle');
+  const tutorSidebar = document.getElementById('tutorSidebar');
 
-document.addEventListener('DOMContentLoaded', () => {
-  const chatForm = document.getElementById('chatForm');
-  const chatInput = document.getElementById('chatInput');
-  const chatBox = document.getElementById('chatBox');
-  const voiceBtn = document.getElementById('voiceBtn');
-  const clearBtn = document.getElementById('clearBtn');
+  if (tutorSidebarToggle && tutorSidebar) {
+    let backdrop = document.querySelector('.tutor-sidebar-backdrop');
+    if (!backdrop) {
+      backdrop = document.createElement('div');
+      backdrop.className = 'tutor-sidebar-backdrop';
+      document.body.appendChild(backdrop);
+    }
+
+    const toggleSidebar = () => {
+      tutorSidebar.classList.toggle('show');
+      backdrop.classList.toggle('show');
+    };
+
+    tutorSidebarToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleSidebar();
+    });
+
+    backdrop.addEventListener('click', toggleSidebar);
+
+    tutorSidebar.querySelectorAll('.history-item, #clearBtn').forEach(item => {
+      item.addEventListener('click', () => {
+        if (window.innerWidth < 992) {
+          tutorSidebar.classList.remove('show');
+          backdrop.classList.remove('show');
+        }
+      });
+    });
+  }
 
   if (chatForm && chatInput && chatBox) {
     chatForm.addEventListener('submit', async (e) => {

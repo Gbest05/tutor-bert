@@ -395,9 +395,11 @@ body.auth-page {
 /* ChatGPT-Style AI Tutor Layout */
 .tutor-container {
   display: flex;
-  height: calc(100vh - 55px);
+  height: calc(100vh - 64px);
+  height: calc(100dvh - 64px);
   background: #ffffff;
   overflow: hidden;
+  position: relative;
 }
 
 .tutor-sidebar {
@@ -733,16 +735,42 @@ p, h1, h2, h3, h4, h5, h6, span, a, td, th, div {
     font-size: 2.2rem !important;
   }
 
-  .tutor-sidebar {
-    position: absolute;
-    left: -300px;
-    z-index: 1050;
-    height: 100%;
-    transition: var(--transition-normal);
+  .tutor-container {
+    height: calc(100vh - 64px) !important;
+    height: calc(100dvh - 64px) !important;
   }
 
-  .tutor-sidebar.open {
+  .tutor-sidebar {
+    position: fixed !important;
+    top: 64px !important;
+    left: -320px !important;
+    bottom: 0 !important;
+    width: 290px !important;
+    height: calc(100vh - 64px) !important;
+    height: calc(100dvh - 64px) !important;
+    z-index: 1060 !important;
+    transition: left 0.3s ease-in-out !important;
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  .tutor-sidebar.show {
+    left: 0 !important;
+  }
+
+  .tutor-sidebar-backdrop {
+    position: fixed;
+    top: 64px;
     left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1055;
+    display: none;
+  }
+
+  .tutor-sidebar-backdrop.show {
+    display: block !important;
   }
 }
 
@@ -778,6 +806,31 @@ p, h1, h2, h3, h4, h5, h6, span, a, td, th, div {
 
   .portal-user-pill {
     padding: 0.2rem 0.4rem !important;
+  }
+
+  .chat-box {
+    padding: 0.85rem !important;
+    gap: 0.85rem !important;
+  }
+
+  .chat-bubble {
+    max-width: 92% !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.88rem !important;
+    word-break: break-word !important;
+  }
+
+  .chat-input-area {
+    padding: 0.5rem 0.6rem !important;
+  }
+
+  .chat-input-group {
+    padding: 0.25rem 0.5rem !important;
+  }
+
+  .chat-input-group input {
+    font-size: 0.85rem !important;
+    padding: 0.35rem 0.5rem !important;
   }
 
   .portal-user-avatar {
