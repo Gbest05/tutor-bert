@@ -1,7 +1,15 @@
-  // Mobile Offcanvas Sidebar Handler
+/* AI Tutor ChatGPT-Style Script for ITS-BERT */
+
+document.addEventListener('DOMContentLoaded', () => {
+  const chatForm = document.getElementById('chatForm');
+  const chatInput = document.getElementById('chatInput');
+  const chatBox = document.getElementById('chatBox');
+  const voiceBtn = document.getElementById('voiceBtn');
+  const clearBtn = document.getElementById('clearBtn');
   const tutorSidebarToggle = document.getElementById('tutorSidebarToggle');
   const tutorSidebar = document.getElementById('tutorSidebar');
 
+  // Mobile Offcanvas Sidebar Handler
   if (tutorSidebarToggle && tutorSidebar) {
     let backdrop = document.querySelector('.tutor-sidebar-backdrop');
     if (!backdrop) {
@@ -38,7 +46,7 @@
       const question = chatInput.value.trim();
       if (!question) return;
 
-      // Append Student Message
+      // Append Student Message immediately
       appendMessage(question, 'student');
       chatInput.value = '';
 
@@ -111,7 +119,9 @@
       voiceBtn.addEventListener('click', () => {
         voiceBtn.classList.add('text-danger', 'animate-pulse');
         recognition.start();
-        showToast("Voice listening activated... Speak your question now.", "info");
+        if (typeof showToast === 'function') {
+          showToast("Voice listening activated... Speak your question now.", "info");
+        }
       });
 
       recognition.onresult = (event) => {
@@ -122,7 +132,9 @@
 
       recognition.onerror = () => {
         voiceBtn.classList.remove('text-danger', 'animate-pulse');
-        showToast("Voice recognition error or cancelled.", "danger");
+        if (typeof showToast === 'function') {
+          showToast("Voice recognition error or cancelled.", "danger");
+        }
       };
 
       recognition.onend = () => {
@@ -130,7 +142,9 @@
       };
     } else if (voiceBtn) {
       voiceBtn.addEventListener('click', () => {
-        showToast("Speech recognition is not supported in this browser. Please type your query.", "warning");
+        if (typeof showToast === 'function') {
+          showToast("Speech recognition is not supported in this browser. Please type your query.", "warning");
+        }
       });
     }
 
@@ -141,10 +155,10 @@
           chatBox.innerHTML = `
             <div class="chat-bubble bot">
               <div class="d-flex align-items-center gap-2 mb-1">
-                <img src="assets/images/ai_tutor_avatar.jpg" class="rounded-circle" width="28" height="28">
-                <strong>BERT AI Tutor</strong>
+                <img src="assets/images/ai_tutor_avatar.jpg" class="rounded-circle" width="28" height="28" style="object-fit: cover;">
+                <strong class="text-secondary font-heading" style="font-size: 0.9rem;">BERT AI Tutor</strong>
               </div>
-              <p class="mb-0">Conversation cleared! What else would you like to learn today?</p>
+              <p class="mb-0">Conversation cleared! What computer science topic would you like to learn today?</p>
             </div>
           `;
         }
@@ -155,6 +169,8 @@
 
 function appendMessage(text, sender, confidence = null, course = null, historyId = null) {
   const chatBox = document.getElementById('chatBox');
+  if (!chatBox) return;
+  
   const bubble = document.createElement('div');
   bubble.className = `chat-bubble ${sender}`;
 
@@ -195,6 +211,8 @@ function appendMessage(text, sender, confidence = null, course = null, historyId
 
 function showBertLoader() {
   const chatBox = document.getElementById('chatBox');
+  if (!chatBox) return 'loader-none';
+  
   const loader = document.createElement('div');
   const id = 'loader-' + Date.now();
   loader.id = id;
@@ -216,8 +234,12 @@ function removeBertLoader(id) {
 }
 
 function copyText(text) {
-  navigator.clipboard.writeText(text);
-  showToast("Response copied to clipboard!", "success");
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text);
+  }
+  if (typeof showToast === 'function') {
+    showToast("Response copied to clipboard!", "success");
+  }
 }
 
 async function feedback(historyId, type, btn) {
@@ -230,15 +252,19 @@ async function feedback(historyId, type, btn) {
     if (res.ok) {
       btn.parentNode.querySelectorAll('button').forEach(b => b.classList.add('disabled'));
       btn.classList.add('text-primary', 'fw-bold');
-      showToast("Thank you for your feedback!", "success");
+      if (typeof showToast === 'function') {
+        showToast("Thank you for your feedback!", "success");
+      }
     }
   } catch(e) {}
 }
 
 function escapeHtml(str) {
+  if (!str) return '';
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 function formatMarkdown(str) {
+  if (!str) return '';
   return escapeHtml(str).replace(/\n/g, '<br>');
 }
